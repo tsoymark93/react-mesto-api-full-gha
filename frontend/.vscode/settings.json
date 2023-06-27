@@ -1,0 +1,10 @@
+{
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+        "source.fixAll": true,
+        "source.organizeImports": true
+    },
+    "workbench.preferredDarkColorTheme": "Default Light+",
+    "workbench.colorTheme": "Visual Studio Dark",
+    "workbench.preferredHighContrastColorTheme": "Default Light+"
+}

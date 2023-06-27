@@ -1,0 +1,18 @@
+.profile__avatar-container {
+    display: flex;
+    position: relative;
+    justify-content: center;
+}
+
+.profile__avatar-container:hover::after {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    cursor: pointer;
+    background-color: rgba(0,0,0, .8);
+    background-image: url(../../../images/editAvatar.svg);
+    background-repeat: no-repeat;
+    background-size: 26px;
+    background-position: center;
+    content: '';
+}
