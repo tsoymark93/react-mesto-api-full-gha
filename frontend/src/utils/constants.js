@@ -8,7 +8,7 @@ export const selectors = {
 };
 
 export const apiConfig = {
-    baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-45',
+    baseUrl: 'http://api.tsoymark93.nomoreparties.sbs',
     headers: {
         authorization: `Bearer ${localStorage.getItem('token')}`,
         'Content-Type': 'application/json',

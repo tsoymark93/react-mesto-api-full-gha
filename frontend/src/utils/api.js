@@ -82,9 +82,9 @@ class Api {
         return fetch(`${this._baseUrl}/users/me/avatar`, {
             method: 'PATCH',
             headers: {
-                authorization: `Bearer ${localStorage.getItem('token')}`,
-                'Content-Type': 'application/json',
-              },
+        authorization: `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json',
+      },
             body: JSON.stringify({
                 avatar: avatar,
             }),
@@ -93,7 +93,7 @@ class Api {
 }
 let token = localStorage.getItem("jwt");
 export const api = new Api({
-    baseUrl: 'http://localhost:4000',
+    baseUrl: 'http://api.tsoymark93.nomoreparties.sbs',
     headers: {
         authorization: `Berear ${token}`,
         'Content-Type': 'application/json',
