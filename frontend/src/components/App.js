@@ -79,6 +79,7 @@ function App() {
     }
 
     function handleLikeClick(card) {
+        // @ts-ignore
         const isLiked = card.likes.some((like) => like === currentUser._id);
     
         api
@@ -142,8 +143,10 @@ function App() {
 
     function handleConfirmRemove() {
         setIsLoading(true);
+        // @ts-ignore
         api.removeCard(cardToDelete._id)
             .then(() => {
+                // @ts-ignore
                 setCards((state) => state.filter((item) => item._id !== cardToDelete._id));
                 closeAllPopups();
             })
@@ -218,6 +221,7 @@ function App() {
 
     useEffect(() => {
         tokenCheck();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     function loadMainContent() {
@@ -235,6 +239,7 @@ function App() {
 
     useEffect(() => {
         loadMainContent();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [loggedIn]);
 
     return (
