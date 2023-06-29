@@ -10,7 +10,7 @@ export const selectors = {
 export const apiConfig = {
     baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-45',
     headers: {
-        authorization: 'dcf33f23-ff05-4e3a-8a4b-af29c9f9dbf6',
+        authorization: `Bearer ${localStorage.getItem('token')}`,
         'Content-Type': 'application/json',
     },
 };
