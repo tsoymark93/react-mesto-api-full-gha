@@ -3,7 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const { errors } = require('celebrate');
-const cors = require('cors');
+// const cors = require('cors');
 const path = require('path');
 const userRouter = require('./routes/users');
 const cardRouter = require('./routes/cards');
@@ -18,7 +18,8 @@ const { PORT = 3000 } = process.env;
 const { PATH = 'mongodb://127.0.0.1:27017/mestodb' } = process.env.PATH;
 const app = express();
 
-app.use(cors());
+// app.use(cors());
+app.use(corsPolicy);
 app.use(bodyParser.json());
 const { validationCreateUser, validationLogin } = require('./middlewares/validation');
 
@@ -27,7 +28,6 @@ mongoose.connect(PATH, { useNewUrlParser: true, useUnifiedTopology: true });
 app.use(requestLogger);
 
 app.use(express.static(path.join(__dirname, '../../frontend')));
-app.use(corsPolicy);
 
 app.get('/crash-test', () => {
   setTimeout(() => {
