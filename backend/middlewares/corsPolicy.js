@@ -1,6 +1,6 @@
 const allowedCors = [
-  'https://mesto.bezprobeloff.nomoredomains.icu',
-  'http://api.mesto.bezprobeloff.nomoredomains.icu',
+  'https://tsoymark93.nomoreparties.sbs',
+  'https://api.tsoymark93.nomoreparties.sbs',
   'https://localhost:3000',
   'http://localhost:3000',
 ];
