@@ -13,19 +13,13 @@ const NotFoundError = require('./errors/NotFoundError');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const { PORT = 3000 } = process.env;
-const { MONGODB_URI = 'mongodb://127.0.0.1:27017/mestodb' } = process.env; // Updated variable name to MONGODB_URI
+const { PATH = 'mongodb://127.0.0.1:27017/mestodb' } = process.env.PATH;
 const app = express();
 
 app.use(bodyParser.json());
 const { validationCreateUser, validationLogin } = require('./middlewares/validation');
 
-mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => {
-    console.log('Connected to MongoDB');
-  })
-  .catch((error) => {
-    console.error('Error connecting to MongoDB:', error);
-  });
+mongoose.connect(PATH, { useNewUrlParser: true, useUnifiedTopology: true });
 
 app.use(cors());
 
@@ -39,9 +33,9 @@ app.get('/crash-test', () => {
 
 app.post('/signin', validationLogin, login);
 app.post('/signup', validationCreateUser, createUser);
-app.use('/users', auth, userRouter); // Updated route path for userRouter
-app.use('/cards', auth, cardRouter); // Updated route path for cardRouter
-app.use('*', (req, res, next) => {
+app.use('/', auth, userRouter);
+app.use('/', auth, cardRouter);
+app.use('*', auth, (req, res, next) => {
   next(new NotFoundError('Страница не найдена'));
 });
 app.use(errorLogger);
