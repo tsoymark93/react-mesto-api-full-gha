@@ -3,7 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const { errors } = require('celebrate');
-// const cors = require('cors');
+const cors = require('cors'); // Добавлено
 const path = require('path');
 const userRouter = require('./routes/users');
 const cardRouter = require('./routes/cards');
@@ -12,14 +12,12 @@ const auth = require('./middlewares/auth');
 const centralError = require('./middlewares/centralError');
 const NotFoundError = require('./errors/NotFoundError');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-const corsPolicy = require('./middlewares/corsPolicy');
 
 const { PORT = 3000 } = process.env;
 const { PATH = 'mongodb://127.0.0.1:27017/mestodb' } = process.env.PATH;
 const app = express();
 
-// app.use(cors());
-app.use(corsPolicy);
+app.use(cors()); // Изменено
 app.use(bodyParser.json());
 const { validationCreateUser, validationLogin } = require('./middlewares/validation');
 

@@ -1,8 +1,8 @@
 const allowedCors = [
   'https://tsoymark93.nomoreparties.sbs',
   'https://api.tsoymark93.nomoreparties.sbs',
-  'https://127.0.0.1:27017:3000',
-  'http://127.0.0.1:27017:3000',
+  'https://localhost:3000',
+  'http://localhost:3000',
 ];
 const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';
 
