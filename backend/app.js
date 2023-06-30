@@ -18,12 +18,12 @@ const { PORT = 3000 } = process.env;
 const { PATH = 'mongodb://127.0.0.1:27017/mestodb' } = process.env.PATH;
 const app = express();
 
+app.use(cors());
 app.use(bodyParser.json());
 const { validationCreateUser, validationLogin } = require('./middlewares/validation');
 
 mongoose.connect(PATH, { useNewUrlParser: true, useUnifiedTopology: true });
 
-app.use(cors());
 app.use(requestLogger);
 
 app.use(express.static(path.join(__dirname, '../../frontend')));
