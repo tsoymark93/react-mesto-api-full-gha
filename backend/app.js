@@ -22,7 +22,9 @@ const { validationCreateUser, validationLogin } = require('./middlewares/validat
 mongoose.connect(PATH, { useNewUrlParser: true, useUnifiedTopology: true });
 
 app.use(cors());
+
 app.use(requestLogger);
+
 app.get('/crash-test', () => {
   setTimeout(() => {
     throw new Error('Сервер сейчас упадёт');
