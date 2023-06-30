@@ -17,7 +17,7 @@ module.exports.createCard = (req, res, next) => {
 };
 
 module.exports.getCards = (req, res, next) => {
-  Card.find({}).sort({ createdAt: -1 })
+  Card.find({})
     .then((cards) => res.send(cards))
     .catch((err) => next(err));
 };
@@ -36,7 +36,7 @@ module.exports.deleteCard = (req, res, next) => {
       throw new CurrentError('Недостаточно прав');
     })
     .catch((err) => {
-      if (err.name === 'ObjectId') {
+      if (err.name === 'CastError') {
         next(new ValidationError('Запрашиваемая карточка не найдена'));
       } else {
         next(err);
