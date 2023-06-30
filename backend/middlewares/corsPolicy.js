@@ -1,5 +1,5 @@
 const allowedCors = [
-  'http://tsoymark93.nomoreparties.sbs',
+  'https://tsoymark93.nomoreparties.sbs',
   'http://api.tsoymark93.nomoreparties.sbs',
   'https://localhost:3000',
   'http://localhost:3000',
