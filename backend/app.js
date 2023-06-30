@@ -12,7 +12,6 @@ const auth = require('./middlewares/auth');
 const centralError = require('./middlewares/centralError');
 const NotFoundError = require('./errors/NotFoundError');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-const { corsPolicy } = require('./middlewares/corsPolicy');
 
 const { PORT = 3000 } = process.env;
 const { PATH = 'mongodb://127.0.0.1:27017/mestodb' } = process.env.PATH;
@@ -27,7 +26,6 @@ app.use(cors());
 app.use(requestLogger);
 
 app.use(express.static(path.join(__dirname, '../../frontend')));
-app.use(corsPolicy);
 
 app.get('/crash-test', () => {
   setTimeout(() => {
