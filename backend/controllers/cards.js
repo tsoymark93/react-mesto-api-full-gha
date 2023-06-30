@@ -17,30 +17,26 @@ module.exports.createCard = (req, res, next) => {
 };
 
 module.exports.getCards = (req, res, next) => {
-  Card.find({})
+  Card.find({}).sort({ createdAt: -1 })
     .then((cards) => res.send(cards))
     .catch((err) => next(err));
 };
 
 module.exports.deleteCard = (req, res, next) => {
-  Card.findById(req.params.cardId)
+  Card.findByIdAndDelete(req.params.cardId)
     .then((card) => {
       if (!card) {
         throw new NotFoundError('Запрашиваемая карточка не найдена');
       }
 
       if (card.owner.toString() === req.user._id) {
-        return Card.deleteOne({ _id: req.params.cardId })
-          .then(() => res.send(card));
+        res.json(card);
+      } else {
+        throw new CurrentError('Недостаточно прав');
       }
-      throw new CurrentError('Недостаточно прав');
     })
     .catch((err) => {
-      if (err.name === 'CastError') {
-        next(new ValidationError('Запрашиваемая карточка не найдена'));
-      } else {
-        next(err);
-      }
+      next(err);
     });
 };
 
