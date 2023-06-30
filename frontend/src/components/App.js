@@ -164,11 +164,9 @@ function App() {
                 if (res.data) {
                     setLoggedIn(true);
                     setUserProfile(res.data.email);
-                    history.push('/');
                 }
             } catch (err) {
                 setLoggedIn(false);
-                history.push('/signin');
                 showErrorPopup(err);
             }
         }
