@@ -93,7 +93,7 @@ class Api {
 }
 let token = localStorage.getItem("jwt");
 export const api = new Api({
-    baseUrl: 'http://api.tsoymark93.nomoreparties.sbs',
+    baseUrl: 'https://api.tsoymark93.nomoreparties.sbs',
     headers: {
         authorization: `Berear ${token}`,
         'Content-Type': 'application/json',
