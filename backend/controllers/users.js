@@ -4,8 +4,24 @@ const User = require('../models/user');
 const ConflictError = require('../errors/ConflictError');
 const ValidationError = require('../errors/ValidationError');
 const NotFoundError = require('../errors/NotFoundError');
+const UnauthorizedError = require('../errors/UnauthorizedError');
 
-// const secretKey = process.env.SECRET_KEY; -- не могу иначе пройти автотесты
+const { NODE_ENV, JWT_SECRET } = process.env;
+
+module.exports.login = (req, res, next) => {
+  const { email, password } = req.body;
+
+  return User.findUserByCredentials(email, password)
+    .then((user) => {
+      const token = jwt.sign(
+        { _id: user._id },
+        NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
+        { expiresIn: '7d' },
+      );
+
+      res.send({ token });
+    }).catch((err) => next(new UnauthorizedError(err.message)));
+};
 
 // eslint-disable-next-line arrow-body-style
 const updateUserFields = (userId, updateFields) => {
@@ -67,20 +83,6 @@ module.exports.updateAvatar = (req, res, next) => {
   const { avatar } = req.body;
   updateUserFields(req.user._id, { avatar })
     .then((user) => res.send(user))
-    .catch((err) => next(err));
-};
-
-module.exports.login = (req, res, next) => {
-  const { email, password } = req.body;
-
-  return User
-    .findUserByCredentials(email, password)
-    .then((user) => {
-      const token = jwt.sign({ _id: user._id }, 'secret-key', {
-        expiresIn: '7d',
-      });
-      res.send({ token });
-    })
     .catch((err) => next(err));
 };
 
