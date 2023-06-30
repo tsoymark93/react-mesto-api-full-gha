@@ -23,20 +23,24 @@ module.exports.getCards = (req, res, next) => {
 };
 
 module.exports.deleteCard = (req, res, next) => {
-  Card.findByIdAndDelete(req.params.cardId)
+  Card.findById(req.params.cardId)
     .then((card) => {
       if (!card) {
         throw new NotFoundError('Запрашиваемая карточка не найдена');
       }
 
       if (card.owner.toString() === req.user._id) {
-        res.json(card);
-      } else {
-        throw new CurrentError('Недостаточно прав');
+        return Card.deleteOne({ _id: req.params.cardId })
+          .then(() => res.send(card));
       }
+      throw new CurrentError('Недостаточно прав');
     })
     .catch((err) => {
-      next(err);
+      if (err.name === 'ObjectId') {
+        next(new ValidationError('Запрашиваемая карточка не найдена'));
+      } else {
+        next(err);
+      }
     });
 };
 
