@@ -156,37 +156,22 @@ function App() {
             });
     }
 
-    // const tokenCheck = async () => {
-    //     const token = localStorage.getItem('token');
-    //     if (token) {
-    //         try {
-    //             const res = await auth.getContent(token);
-    //             if (res.data) {
-    //                 setLoggedIn(true);
-    //                 setUserProfile(res.data.email);
-    //             }
-    //         } catch (err) {
-    //             setLoggedIn(false);
-    //             showErrorPopup(err);
-    //         }
-    //     }
-    //     setIsPageLoading(false);
-    // };
-
-    const tokenCheck = async (token) => {
-        auth
-          .getContent(token)
-          .then((res) => {
-            if (res) {
-              setCurrentUser({
-                ...currentUser,
-                isLoggedIn: true,
-                ...res,
-              });
+    const tokenCheck = async () => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            try {
+                const res = await auth.getContent(token);
+                if (res.data) {
+                    setLoggedIn(true);
+                    setUserProfile(res.data.email);
+                }
+            } catch (err) {
+                setLoggedIn(false);
+                showErrorPopup(err);
             }
-          })
-          .catch((err) => console.log(err))
-      };
+        }
+        setIsPageLoading(false);
+    };
 
     function onRegister(email, password) {
         setIsRegisterLoading(true);
