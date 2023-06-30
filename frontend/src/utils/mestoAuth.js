@@ -1,4 +1,4 @@
-const BASE_URL = 'http://api.tsoymark93.nomoreparties.sbs';
+const BASE_URL = 'https://api.tsoymark93.nomoreparties.sbs';
 
 const checkResponse = async (res) => {
   if (res.ok) {
