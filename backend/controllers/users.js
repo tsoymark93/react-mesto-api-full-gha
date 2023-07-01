@@ -5,7 +5,7 @@ const ConflictError = require('../errors/ConflictError');
 const ValidationError = require('../errors/ValidationError');
 const NotFoundError = require('../errors/NotFoundError');
 
-// const secretKey = process.env.SECRET_KEY; -- не могу иначе пройти автотесты
+const secretKey = process.env.SECRET_KEY;
 
 // eslint-disable-next-line arrow-body-style
 const updateUserFields = (userId, updateFields) => {
@@ -76,7 +76,7 @@ module.exports.login = (req, res, next) => {
   return User
     .findUserByCredentials(email, password)
     .then((user) => {
-      const token = jwt.sign({ _id: user._id }, 'secret-key', {
+      const token = jwt.sign({ _id: user._id }, secretKey, {
         expiresIn: '7d',
       });
       res.send({ token });
