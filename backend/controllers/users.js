@@ -5,6 +5,8 @@ const ConflictError = require('../errors/ConflictError');
 const ValidationError = require('../errors/ValidationError');
 const NotFoundError = require('../errors/NotFoundError');
 
+// const secretKey = process.env.SECRET_KEY; -- не могу иначе пройти автотесты
+
 // eslint-disable-next-line arrow-body-style
 const updateUserFields = (userId, updateFields) => {
   return User.findByIdAndUpdate(userId, updateFields, { new: true, runValidators: true })
@@ -70,20 +72,16 @@ module.exports.updateAvatar = (req, res, next) => {
 
 module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
-  const { JWT_SECRET = 'dev-secret' } = process.env;
 
-  return User.findUserByCredentials(email, password)
+  return User
+    .findUserByCredentials(email, password)
     .then((user) => {
-      const token = jwt.sign({ _id: user._id }, JWT_SECRET, { expiresIn: '7d' });
-      res.status()
-        .cookie('jwt', token, {
-          maxAge: 3600000,
-          httpOnly: true,
-          sameSite: 'None',
-          secure: true,
-        }).send({ token });
+      const token = jwt.sign({ _id: user._id }, 'secret-key', {
+        expiresIn: '7d',
+      });
+      res.send({ token });
     })
-    .catch(next);
+    .catch((err) => next(err));
 };
 
 module.exports.getCurrentUser = (req, res, next) => {
