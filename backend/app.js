@@ -42,6 +42,22 @@ app.use(errorLogger);
 app.use(errors());
 app.use(centralError);
 
+app.post('/api/check-token', (req, res) => {
+  const token = req.headers.authorization; // Получаем токен из заголовка Authorization
+
+  // Здесь вам необходимо провести проверку токена с использованием вашей аутентификационной логики
+  // Проверьте, является ли токен действительным и связан ли он с аутентифицированным пользователем
+
+  // Пример проверки токена: просто проверяем, является ли токен "valid-token"
+  if (token === 'valid-token') {
+    // Токен действителен, возвращаем успешный ответ
+    res.status(200).json({ message: 'Token is valid' });
+  } else {
+    // Токен недействителен, возвращаем код состояния Unauthorized
+    res.status(401).json({ error: 'Invalid token' });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
 });

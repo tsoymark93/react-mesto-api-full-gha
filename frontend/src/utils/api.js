@@ -1,5 +1,8 @@
 
 class Api {
+    deleteCard(_id) {
+        throw new Error('Method not implemented.');
+    }
     constructor({ baseUrl, headers }) {
         this._baseUrl = baseUrl;
         this._headers = headers;
