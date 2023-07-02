@@ -31,7 +31,7 @@ function App() {
     const [isLoading, setIsLoading] = React.useState(false);
     const [isRemoveCardPopupOpen, setIsRemoveCardPopupOpened] = useState(false);
     const [cardToDelete, setCardTodelete] = useState({});
-    const [isLoginLoading, setIsLoginLoading] = useState(false);
+    const [, setIsLoginLoading] = useState(false);
     const [isRegisterLoading, setIsRegisterLoading] = useState(false);
     const [loggedIn, setLoggedIn] = useState(localStorage.getItem('loggedIn') === 'true');
     const [userProfile, setUserProfile] = useState('');
@@ -181,6 +181,7 @@ function App() {
           }
         }
         setIsPageLoading(false);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       }, []);
       
       
