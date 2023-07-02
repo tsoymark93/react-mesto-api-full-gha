@@ -33,13 +33,14 @@ function App() {
     const [cardToDelete, setCardTodelete] = useState({});
     const [isLoginLoading, setIsLoginLoading] = useState(false);
     const [isRegisterLoading, setIsRegisterLoading] = useState(false);
-    const [loggedIn, setLoggedIn] = useState(false);
+    const [loggedIn, setLoggedIn] = useState(localStorage.getItem('loggedIn') === 'true');
     const [userProfile, setUserProfile] = useState('');
     const [isRegisterResultPopupOpen, setIsRegisterResultPopupOpen] = React.useState(false);
     const [isRegisterSucceed, setIsRegisterSucceed] = React.useState(true);
     const [errorMessage, setErrorMessage] = useState('');
     const [isErrorMessagePopupOpen, setIsErrorMessagePopupOpen] = useState(false);
     const [isPageLoading, setIsPageLoading] = useState(true);
+
 
     function handleEditAvatarClick() {
         setIsEditAvatarPopupOpen(true);
@@ -156,24 +157,33 @@ function App() {
             });
     }
 
-    const tokenCheck = async () => {
+    useEffect(() => {
         const token = localStorage.getItem('token');
         if (token) {
-            try {
-                const res = await auth.getContent(token);
+          try {
+            auth.getContent(token)
+              .then((res) => {
                 if (res.data) {
-                    setLoggedIn(true);
-                    setUserProfile(res.data.email);
-                    history.push('/');
+                  setLoggedIn(true);
+                  setUserProfile(res.data.email);
+                  history.push('/');
                 }
-            } catch (err) {
+              })
+              .catch((err) => {
                 setLoggedIn(false);
                 history.push('/signin');
                 showErrorPopup(err);
-            }
+              });
+          } catch (err) {
+            setLoggedIn(false);
+            history.push('/signin');
+            showErrorPopup(err);
+          }
         }
         setIsPageLoading(false);
-    };
+      }, []);
+      
+      
 
     function onRegister(email, password) {
         setIsRegisterLoading(true);
@@ -196,21 +206,23 @@ function App() {
     function onLogin(email, password) {
         setIsLoginLoading(true);
         auth.login(email, password)
-            .then(() => {
-                setUserProfile(email);
-                setLoggedIn(true);
-                history.push('/');
-                setIsPageLoading(true);
-            })
-            .catch((err) => {
-                console.log(err);
-                setIsRegisterSucceed(false);
-                setIsRegisterResultPopupOpen(true);
-            })
-            .finally(() => {
-                setIsLoginLoading(false);
-            });
-    }
+          .then(() => {
+            setUserProfile(email);
+            setLoggedIn(true);
+            localStorage.setItem('loggedIn', 'true'); // Store the loggedIn state
+            history.push('/');
+            setIsPageLoading(true);
+          })
+          .catch((err) => {
+            console.log(err);
+            setIsRegisterSucceed(false);
+            setIsRegisterResultPopupOpen(true);
+          })
+          .finally(() => {
+            setIsLoginLoading(false);
+          });
+      }
+      
 
     function onSignOut() {
         localStorage.removeItem('token');
@@ -220,9 +232,8 @@ function App() {
     }
 
     useEffect(() => {
-        tokenCheck();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+        localStorage.setItem('loggedIn', loggedIn.toString());
+      }, [loggedIn]);      
 
     function loadMainContent() {
         if (loggedIn) {
@@ -248,11 +259,9 @@ function App() {
                 {isPageLoading && <div className="loading-screen" />}
                 <Header loggedIn={loggedIn} onSignOut={onSignOut} userProfile={userProfile} />
                 <Switch>
-                    <Route path="/signin">
-                        <Login onLogin={onLogin} isLoading={isLoginLoading} />
+                    <Route path="/signin">{loggedIn ? <Redirect to="/" /> : <Login onLogin={onLogin} isLoading={isLoading} />}
                     </Route>
-                    <Route path="/signup">
-                        <Register onRegister={onRegister} isLoading={isRegisterLoading} />
+                    <Route path="/signup">{loggedIn ? <Redirect to="/" /> : <Register onRegister={onRegister} isLoading={isRegisterLoading} />}
                     </Route>
                     <ProtectedRoute
                         exact
@@ -267,7 +276,6 @@ function App() {
                         cards={cards}
                         component={Main}
                     />
-                    <Route path="*">{loggedIn ? <Redirect to="/" /> : <Redirect to="/signin" />}</Route>
                 </Switch>
                 <Footer />
                 <Popup
