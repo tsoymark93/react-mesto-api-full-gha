@@ -36,8 +36,8 @@ module.exports.deleteCard = (req, res, next) => {
       throw new CurrentError('Недостаточно прав');
     })
     .catch((err) => {
-      if (err.name === 'ObjectId') {
-        next(new ValidationError('Запрашиваемая карточка не найдена'));
+      if (err.name === 'CastError') {
+        next(new ValidationError('Переданы некорректные данные'));
       } else {
         next(err);
       }
